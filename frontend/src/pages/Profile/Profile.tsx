@@ -20,7 +20,7 @@ const Profile: React.FC = () => {
 
             if (!username) {
                 console.error('Username not found in cookies');
-                return <Navigate to="/login" />;
+                return;
             }
 
             try {
@@ -84,7 +84,7 @@ const Profile: React.FC = () => {
 
         if (!username) {
             console.error('Username not found in cookies');
-            return <Navigate to="/logim" />;
+            return;
         }
 
         try {
@@ -98,6 +98,10 @@ const Profile: React.FC = () => {
             console.error('Error updating profile:', error);
         }
     };
+
+    if (!Cookies.get("username")) {
+        return <Navigate to="/login" />;
+    }
 
     return (
         <div className='relative min-h-screen overflow-x-hidden'>

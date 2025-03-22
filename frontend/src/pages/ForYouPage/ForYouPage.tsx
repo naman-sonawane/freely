@@ -89,7 +89,7 @@ const ForYouPage: React.FC = () => {
 
             if (!username) {
                 console.error('Username not found in cookies');
-                return <Navigate to="/login" />;
+                return;
             }
 
             const userGoals = await fetchUserGoals(username);
@@ -129,6 +129,10 @@ const ForYouPage: React.FC = () => {
         setSavedItems((prev) => ({ ...prev, [index]: !prev[index] }));
     };
 
+    if (!Cookies.get("username")) {
+        return <Navigate to="/login" />;
+    }
+    
     return (
         <div className="w-screen relative border-2 h-screen flex">
             <div className="absolute top-0 left-0 w-full">
