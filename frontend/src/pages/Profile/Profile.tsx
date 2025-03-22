@@ -4,6 +4,7 @@ import Cookies from 'js-cookie';
 import PlusIcon from './assets/Plus.svg';
 import CloseIcon from './assets/Close.svg';
 import AppNavbar from '../App Navbar/AppNavbar'; 
+import { Navigate } from 'react-router-dom';
 
 const Profile: React.FC = () => {
     const [academicInterests, setAcademicInterests] = useState<string[]>([]);
@@ -19,7 +20,7 @@ const Profile: React.FC = () => {
 
             if (!username) {
                 console.error('Username not found in cookies');
-                return;
+                return <Navigate to="/login" />;
             }
 
             try {
@@ -83,7 +84,7 @@ const Profile: React.FC = () => {
 
         if (!username) {
             console.error('Username not found in cookies');
-            return;
+            return <Navigate to="/logim" />;
         }
 
         try {

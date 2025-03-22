@@ -10,6 +10,7 @@ import LikeIcon from './assets/LikeIcon.svg';
 import LikedIcon from './assets/Liked.svg';
 import SaveIcon from './assets/SaveIcon.svg';
 import SavedIcon from './assets/Saved.svg';
+import  { Navigate } from 'react-router-dom'
 
 interface MediaData {
     type: 'article' | 'video' | 'live';
@@ -88,7 +89,7 @@ const ForYouPage: React.FC = () => {
 
             if (!username) {
                 console.error('Username not found in cookies');
-                return;
+                return <Navigate to="/login" />;
             }
 
             const userGoals = await fetchUserGoals(username);

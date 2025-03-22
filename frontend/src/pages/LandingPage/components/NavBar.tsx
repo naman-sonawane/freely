@@ -26,7 +26,7 @@ const NavBar: React.FC = () => {
               alt="Company Logo"
               className="w-12 h-12 mr-2"
             />
-            InstaLearn
+            Freely
           </a>
         </div>
 
