@@ -53,6 +53,7 @@ const Profile: React.FC = () => {
     purchaseDate: new Date().toISOString().split("T")[0],
   })
 
+
   useEffect(() => {
     const fetchProfileData = async () => {
       const username = Cookies.get("username")
@@ -122,7 +123,7 @@ const Profile: React.FC = () => {
       // Enable button if name is not empty and value is valid
       const isValid = updated.name && updated.name.trim() !== "" && updated.value !== undefined && updated.value > 0
 
-      setIsButtonEnabled(isValid || false)
+      setIsButtonEnabled(isValid || false);
       return updated
     })
   }
