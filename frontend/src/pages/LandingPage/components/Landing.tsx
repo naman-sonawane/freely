@@ -1,7 +1,6 @@
 // src/pages/LandingPage/components/Landing.tsx
 import React from "react";
 import Check from "./assets/Check.svg";
-import Squiggle from "./assets/Squiggle.svg";
 import Chat from "./assets/Chat.svg";
 import Members from "./assets/Members.svg";
 
