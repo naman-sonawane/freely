@@ -116,13 +116,13 @@ const Profile: React.FC = () => {
     setIsButtonEnabled(value.trim() !== "")
   }
 
-  const handleAssetInputChange = (field: keyof Asset, value: any) => {
+  const handleAssetInputChange = (field: keyof Asset, value: string) => {
     setNewAsset((prev) => {
       const updated = { ...prev, [field]: value }
       // Enable button if name is not empty and value is valid
       const isValid = updated.name && updated.name.trim() !== "" && updated.value !== undefined && updated.value > 0
 
-      setIsButtonEnabled(isValid)
+      setIsButtonEnabled(isValid || false)
       return updated
     })
   }
