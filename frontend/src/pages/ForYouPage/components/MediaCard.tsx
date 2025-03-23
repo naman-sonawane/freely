@@ -19,13 +19,11 @@ interface MediaCardProps {
 }
 
 const MediaCard: React.FC<MediaCardProps> = ({
-  id,
   title,
   description,
   imageUrl,
   sourceUrl,
   sourceName,
-  type,
   readTime,
   date,
   relevanceScore,
