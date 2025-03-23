@@ -1,5 +1,6 @@
 const { fetchNewsByCategory, fetchAllNews, matchNewsToInterests } = require('../services/rssFeedService');
 const { GoogleGenerativeAI } = require('@google/generative-ai');
+const User = require('../models/userModel');
 
 // Initialize Gemini API with the correct environment variable name
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
@@ -12,32 +13,79 @@ const AVAILABLE_CATEGORIES = [
 ];
 
 /**
- * Get personalized recommendations based on user's academic interests and goals
+ * Get personalized recommendations based on user's interests, goals, and assets
  */
 exports.getRecommendedContent = async (req, res) => {
   try {
-    const { interests, goals } = req.query;
+    const { username } = req.query;
     
-    if (!interests && !goals) {
+    if (!username) {
       return res.status(400).json({ 
-        error: 'Please provide at least interests or goals for personalized recommendations' 
+        error: 'Please provide a username for personalized recommendations' 
       });
     }
     
-    // Combine interests and goals for analysis
+    // Fetch the user's complete profile from the database
+    const user = await User.findOne({ username });
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    
+    const { interests, goals, assets } = user;
+    
+    // Format asset information for the AI
+    const assetInfo = assets.map(asset => {
+      return `${asset.name} (${asset.type}): $${asset.value}`;
+    }).join('\n');
+    
+    // Calculate asset distribution by type
+    const assetDistribution = {};
+    let totalValue = 0;
+    
+    assets.forEach(asset => {
+      if (!assetDistribution[asset.type]) {
+        assetDistribution[asset.type] = 0;
+      }
+      assetDistribution[asset.type] += asset.value;
+      totalValue += asset.value;
+    });
+    
+    // Format asset distribution for the AI
+    const distributionInfo = Object.entries(assetDistribution)
+      .map(([type, value]) => {
+        const percentage = totalValue > 0 ? ((value) / totalValue * 100).toFixed(2) : 0;
+        return `${type}: ${percentage}%`;
+      })
+      .join('\n');
+    
+    // Combine all user profile information
     const userProfile = `
-      Interests: ${interests || 'None specified'}
-      Goals: ${goals || 'None specified'}
+      Interests: ${interests.join(', ') || 'None specified'}
+      Goals: ${goals.join(', ') || 'None specified'}
+      
+      Asset Portfolio:
+      ${assets.length > 0 ? assetInfo : 'No assets'}
+      
+      Portfolio Distribution:
+      ${assets.length > 0 ? distributionInfo : 'No assets'}
     `;
     
     // Use Gemini to analyze which categories would be most relevant
     const prompt = `
-      Based on the following user profile, determine which news categories would be most relevant.
+      You are a financial news recommendation system. Based on the following user profile, determine which news categories would be most relevant to their interests, goals, and investment portfolio.
       
       User Profile:
       ${userProfile}
       
       Available categories: ${AVAILABLE_CATEGORIES.join(', ')}
+      
+      Consider the following when making recommendations:
+      1. If they have stocks, recommend finance and stocks categories
+      2. If they have crypto assets, recommend crypto category
+      3. If they have real estate investments, recommend realestate category
+      4. Always include business category for investors
+      5. Include technology if it's in their interests or they have tech stocks
+      6. Include any categories that align with their stated interests and goals
       
       Return your response as a JSON array of strings containing ONLY the most relevant category names from the available list.
       For example: ["technology", "science", "education"]
@@ -63,12 +111,12 @@ exports.getRecommendedContent = async (req, res) => {
       
       // If we somehow got no valid categories, default to some safe ones
       if (recommendedCategories.length === 0) {
-        recommendedCategories = ['technology', 'education', 'general'];
+        recommendedCategories = ['business', 'finance', 'general'];
       }
     } catch (error) {
       console.error('Error parsing Gemini response:', error);
       // Default to safe categories if parsing fails
-      recommendedCategories = ['technology', 'education', 'general'];
+      recommendedCategories = ['business', 'finance', 'general'];
     }
     
     // Now fetch news from the recommended categories
@@ -80,15 +128,51 @@ exports.getRecommendedContent = async (req, res) => {
     // Remove duplicates
     const uniqueNews = removeDuplicates(newsItems, 'title');
     
-    // Match and rank by user interests
-    const interestsList = interests ? interests.split(',') : [];
-    const goalsList = goals ? goals.split(',') : [];
-    const userInterests = [...interestsList, ...goalsList];
+    // Create a combined list of interests, goals, and asset names for matching
+    const interestsList = interests || [];
+    const goalsList = goals || [];
+    const assetNames = assets.map(asset => asset.name) || [];
+    const assetTypes = assets.map(asset => asset.type) || [];
     
-    const matchedNews = matchNewsToInterests(uniqueNews, userInterests);
+    const userKeywords = [
+      ...interestsList, 
+      ...goalsList, 
+      ...assetNames,
+      ...assetTypes
+    ];
+    
+    // Match and rank by user interests, goals, and assets
+    const matchedNews = matchNewsToInterests(uniqueNews, userKeywords);
+    
+    // Additional ranking for assets - boost articles that mention user's assets
+    const boostedNews = matchedNews.map(article => {
+      let assetBoost = 0;
+      
+      // Check if article mentions any of the user's assets
+      assets.forEach(asset => {
+        const assetName = asset.name.toLowerCase();
+        const assetType = asset.type.toLowerCase();
+        
+        if (
+          article.title.toLowerCase().includes(assetName) || 
+          article.description.toLowerCase().includes(assetName) ||
+          article.title.toLowerCase().includes(assetType) || 
+          article.description.toLowerCase().includes(assetType)
+        ) {
+          // Boost based on the asset's value relative to portfolio
+          const assetPercentage = asset.value / totalValue;
+          assetBoost += assetPercentage * 2; // Multiply by 2 to give it more weight
+        }
+      });
+      
+      return {
+        ...article,
+        relevanceScore: article.relevanceScore + assetBoost
+      };
+    });
     
     // Sort by relevance and date
-    const sortedNews = matchedNews.sort((a, b) => {
+    const sortedNews = boostedNews.sort((a, b) => {
       // First by relevance score (high to low)
       if (b.relevanceScore !== a.relevanceScore) {
         return b.relevanceScore - a.relevanceScore;
