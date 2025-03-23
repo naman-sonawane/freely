@@ -1,7 +1,6 @@
 // src/pages/LandingPage/components/Landing.tsx
 import React from "react";
 import Check from "./assets/Check.svg";
-import Dots from "./assets/Dots.svg";
 import Squiggle from "./assets/Squiggle.svg";
 import Chat from "./assets/Chat.svg";
 import Members from "./assets/Members.svg";
@@ -45,7 +44,7 @@ const Landing: React.FC = () => {
           </div>
         </div>
 
-        {/* Right Side Decorative Elements */}
+        {/* Right Side Decorative Elements 
         <div className="absolute right-0 top-0 bottom-0 flex items-center justify-end overflow-hidden">
           <img src={Dots} alt="Decorative Dots" className="h-full max-w-none w-[70%] opacity-40" />
         </div>
@@ -53,6 +52,7 @@ const Landing: React.FC = () => {
         <div className="absolute right-40 top-1/2 -translate-y-1/2">
           <img src={Squiggle} alt="Decorative Squiggle" className="h-20 w-auto mt-10 opacity-60" />
         </div>
+        */}
 
         {/* Floating Info Cards */}
         <div className="absolute right-96 top-1/3 transform -translate-y-1/2 w-48 h-16 bg-[#23234b] shadow-md rounded-lg border border-[#ff2e63] flex items-center justify-center">
