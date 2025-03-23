@@ -134,11 +134,11 @@ const ForYouPage: React.FC = () => {
     }
     
     return (
-        <div className="w-screen relative border-2 h-screen flex">
-            <div className="absolute top-0 left-0 w-full">
+        <div className="w-screen relative border-2 h-screen max-h-screen p-2 flex flex-col items-center">
+            <div className="top-0 left-0 w-full">
                 <AppNavbar />
             </div>
-            <div className="flex flex-row p-6 w-full max-w-4xl mx-auto mt-4">
+            <div className="flex flex-row p-6 w-full max-w-4xl grow justify-center">
                 <div className="w-1/4 p-4 bg-white border border-gray-300 rounded-lg shadow-sm mr-4">
                     <h2 className="text-lg font-semibold mb-4">Your Goals</h2>
                     <div className="space-y-2">
@@ -153,8 +153,8 @@ const ForYouPage: React.FC = () => {
                         ))}
                     </div>
                 </div>
-                <div className="w-3/4">
-                    <h1 className="text-2xl font-semibold mb-6 text-center">For You</h1>
+                <div className="w-3/4 flex flex-col overflow-hidden gap-6">
+                    <h1 className="text-2xl font-semibold text-center">For You</h1>
 
                     {loading ? (
                         <div className="flex flex-col items-center space-y-4">
@@ -169,7 +169,7 @@ const ForYouPage: React.FC = () => {
                             </div>
                         </div>
                     ) : (
-                        <div className="flex flex-col items-center space-y-4 overflow-y-auto" style={{ maxHeight: '80vh' }}>
+                        <div className="flex flex-col items-center space-y-4 overflow-y-auto">
                             {mediaData.map((media, index) => (
                                 <div key={index} className="p-4 bg-white border border-gray-300 rounded-lg shadow-sm w-full max-w-2xl">
                                     <div className="flex items-start">
