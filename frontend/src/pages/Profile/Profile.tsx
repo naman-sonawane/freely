@@ -7,7 +7,7 @@ import Cookies from "js-cookie"
 import PlusIcon from "./assets/Plus.svg"
 import CloseIcon from "./assets/Close.svg"
 import AppNavbar from "../App Navbar/AppNavbar"
-import { Navigate } from "react-router-dom"
+// import { Navigate } from "react-router-dom"
 import { Pie, Line } from "react-chartjs-2"
 import {
   Chart as ChartJS,
@@ -56,8 +56,8 @@ const Profile: React.FC = () => {
 
   useEffect(() => {
     const fetchProfileData = async () => {
-      const username = Cookies.get("username")
-
+      const username = Cookies.get("username");
+    
       if (!username) {
         console.error("Username not found in cookies")
         return
@@ -269,7 +269,7 @@ const Profile: React.FC = () => {
   }
 
   if (!Cookies.get("username")) {
-    return <Navigate to="/login" />
+    // return <Navigate to="/login" />
   }
 
   return (
