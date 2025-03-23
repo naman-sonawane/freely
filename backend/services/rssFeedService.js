@@ -58,8 +58,6 @@ const RSS_FEEDS = {
       { url: 'https://www.wsj.com/xml/rss/3_7014.xml', name: 'WSJ Business' },
       { url: 'https://seekingalpha.com/feed.xml', name: 'Seeking Alpha' },
       { url: 'https://www.investopedia.com/feedbuilder/feed/getfeed?feedName=rss_headline', name: 'Investopedia' },
-      { url: 'https://www.barrons.com/feed/rss/feed.xml', name: 'Barron\'s' },
-      { url: 'https://www.morningstar.com/rss/feed', name: 'Morningstar' },
       { url: 'https://www.economist.com/finance-and-economics/rss.xml', name: 'The Economist Finance' },
       { url: 'https://www.moneycontrol.com/rss/business.xml', name: 'MoneyControl' },
       { url: 'https://feeds.a.dj.com/rss/RSSMarketsMain.xml', name: 'Dow Jones Markets' }
@@ -68,12 +66,10 @@ const RSS_FEEDS = {
     stocks: [
       { url: 'https://www.investors.com/category/market-trend/stock-market-today/feed/', name: 'Investor\'s Business Daily' },
       { url: 'https://www.fool.com/rss/headlines', name: 'Motley Fool' },
-      { url: 'https://www.zacks.com/rss/rank_comm.rss', name: 'Zacks Investment Research' },
       { url: 'https://stocknews.com/feed/', name: 'StockNews' },
       { url: 'https://www.benzinga.com/feed/market-news', name: 'Benzinga Markets' },
       { url: 'https://www.marketbeat.com/rss/marketbeat-feed.aspx', name: 'MarketBeat' },
       { url: 'https://www.investmentwatchblog.com/feed/', name: 'Investment Watch Blog' },
-      { url: 'https://feeds.finviz.com/finviz_news.rss', name: 'Finviz News' },
       { url: 'https://www.dividendinvestor.com/feed/', name: 'Dividend Investor' },
       { url: 'https://www.tradingview.com/feed/', name: 'TradingView Blog' }
     ],
