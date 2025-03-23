@@ -1,5 +1,6 @@
 require('dotenv').config();
 
+const path = require("node:path");
 const uploadRoutes = require('./routes/uploadRoutes.js');
 const express = require('express');
 const mongoose = require('mongoose');
@@ -35,6 +36,12 @@ const userRoutes = require('./routes/userRoutes');
 app.use('/api', uploadRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api', linkPreviewRoutes);
+
+app.use("/assets", express.static(path.join(__dirname, "..", "frontend", "dist", "assets")))
+
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "..", "frontend", "dist", "index.html"));
+}); 
 
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
