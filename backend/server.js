@@ -6,6 +6,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
+const { scheduleNewsPrefetching } = require('./services/newsScheduler');
+const newsRoutes = require('./routes/newsRoutes');
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -36,6 +38,7 @@ const userRoutes = require('./routes/userRoutes');
 app.use('/api', uploadRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api', linkPreviewRoutes);
+app.use('/api/news', newsRoutes);
 
 app.use("/assets", express.static(path.join(__dirname, "..", "frontend", "dist", "assets")))
 
@@ -45,5 +48,6 @@ app.get("*", (req, res) => {
 
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
+    scheduleNewsPrefetching();
 });
 
