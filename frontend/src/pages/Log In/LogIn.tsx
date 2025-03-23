@@ -29,7 +29,7 @@ const LoginPage: React.FC = () => {
 
             if (response.status === 200) {
                 alert("Login successful!");
-                Cookies.set('username', response.data.user.username, { expires: 30 });
+                Cookies.set('username', response.data.user.username, { expires: 30, secure: true });
                 navigate('/profile');  // Redirect to /profile after successful login
             }
         } catch (error) {
