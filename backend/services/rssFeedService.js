@@ -10,34 +10,142 @@ const parser = new Parser({
 });
 
 // List of popular RSS feeds by category
+// List of popular RSS feeds by category
 const RSS_FEEDS = {
-  technology: [
-    { url: 'https://feeds.feedburner.com/TechCrunch', name: 'TechCrunch' },
-    { url: 'https://www.wired.com/feed/rss', name: 'Wired' },
-    { url: 'https://www.theverge.com/rss/index.xml', name: 'The Verge' },
-    { url: 'https://feeds.arstechnica.com/arstechnica/technology-lab', name: 'Ars Technica' }
-  ],
-  science: [
-    { url: 'https://www.sciencedaily.com/rss/all.xml', name: 'ScienceDaily' },
-    { url: 'https://rss.sciam.com/ScientificAmerican-Global', name: 'Scientific American' },
-    { url: 'https://www.livescience.com/feeds/all', name: 'Live Science' }
-  ],
-  business: [
-    { url: 'https://www.forbes.com/business/feed/', name: 'Forbes Business' },
-    { url: 'https://feeds.bloomberg.com/markets/news.rss', name: 'Bloomberg' },
-    { url: 'https://www.entrepreneur.com/latest.rss', name: 'Entrepreneur' }
-  ],
-  education: [
-    { url: 'https://www.edutopia.org/rss.xml', name: 'Edutopia' },
-    { url: 'https://www.edsurge.com/feeds/articles', name: 'EdSurge' }
-  ],
-  general: [
-    { url: 'https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml', name: 'New York Times' },
-    { url: 'https://feeds.bbci.co.uk/news/rss.xml', name: 'BBC News' },
-    { url: 'https://www.reddit.com/r/news/.rss', name: 'Reddit News' }
-  ]
-};
-
+    technology: [
+      { url: 'https://feeds.feedburner.com/TechCrunch', name: 'TechCrunch' },
+      { url: 'https://www.wired.com/feed/rss', name: 'Wired' },
+      { url: 'https://www.theverge.com/rss/index.xml', name: 'The Verge' },
+      { url: 'https://feeds.arstechnica.com/arstechnica/technology-lab', name: 'Ars Technica' },
+      { url: 'https://www.cnet.com/rss/news/', name: 'CNET' },
+      { url: 'https://www.zdnet.com/news/rss.xml', name: 'ZDNet' },
+      { url: 'https://readwrite.com/feed/', name: 'ReadWrite' },
+      { url: 'https://thenextweb.com/feed', name: 'The Next Web' },
+      { url: 'https://www.engadget.com/rss.xml', name: 'Engadget' },
+      { url: 'https://feeds.feedburner.com/venturebeat/SZYF', name: 'VentureBeat' },
+      { url: 'https://www.macrumors.com/macrumors.xml', name: 'MacRumors' },
+      { url: 'https://www.techmeme.com/feed.xml', name: 'Techmeme' }
+    ],
+    
+    science: [
+      { url: 'https://rss.sciam.com/ScientificAmerican-Global', name: 'Scientific American' },
+      { url: 'https://www.livescience.com/feeds/all', name: 'Live Science' },
+      { url: 'https://feeds.newscientist.com/feeds/features', name: 'New Scientist' },
+      { url: 'https://science.nasa.gov/rss.xml', name: 'NASA Science' },
+      { url: 'https://feeds.nature.com/nature/rss/current', name: 'Nature' },
+      { url: 'https://www.science.org/rss/news_current.xml', name: 'Science Magazine' },
+      { url: 'https://phys.org/rss-feed/', name: 'Phys.org' },
+      { url: 'https://www.popsci.com/feed/', name: 'Popular Science' }
+    ],
+    
+    business: [
+      { url: 'https://feeds.bloomberg.com/wealth/news.rss', name: 'Bloomberg Wealth' },
+      { url: 'https://www.entrepreneur.com/latest.rss', name: 'Entrepreneur' },
+      { url: 'https://www.inc.com/rss/', name: 'Inc. Magazine' },
+      { url: 'https://www.fastcompany.com/latest/rss', name: 'Fast Company' },
+      { url: 'https://fortune.com/feed/', name: 'Fortune' },
+      { url: 'https://www.businessinsider.com/rss', name: 'Business Insider' },
+      { url: 'https://hbr.org/feed', name: 'Harvard Business Review' },
+      { url: 'https://feeds.skynews.com/feeds/rss/business.xml', name: 'Sky News Business' },
+      { url: 'https://www.forbes.com/business/feed/', name: 'Forbes Business' },
+      { url: 'https://knowledge.wharton.upenn.edu/feed/', name: 'Knowledge@Wharton' },
+      { url: 'https://feeds.feedburner.com/CalculatedRisk', name: 'Calculated Risk' }
+    ],
+    
+    finance: [
+      { url: 'https://www.cnbc.com/id/10000664/device/rss/rss.html', name: 'CNBC Finance' },
+      { url: 'https://www.cnbc.com/id/10001147/device/rss/rss.html', name: 'CNBC Investing' },
+      { url: 'https://www.ft.com/rss/home/uk', name: 'Financial Times' },
+      { url: 'https://feeds.marketwatch.com/marketwatch/topstories/', name: 'MarketWatch' },
+      { url: 'https://feeds.marketwatch.com/marketwatch/marketpulse/', name: 'MarketWatch Pulse' },
+      { url: 'https://feeds.marketwatch.com/marketwatch/realtimeheadlines/', name: 'MarketWatch Real-time' },
+      { url: 'https://www.wsj.com/xml/rss/3_7031.xml', name: 'WSJ Markets' },
+      { url: 'https://www.wsj.com/xml/rss/3_7014.xml', name: 'WSJ Business' },
+      { url: 'https://seekingalpha.com/feed.xml', name: 'Seeking Alpha' },
+      { url: 'https://www.investopedia.com/feedbuilder/feed/getfeed?feedName=rss_headline', name: 'Investopedia' },
+      { url: 'https://www.barrons.com/feed/rss/feed.xml', name: 'Barron\'s' },
+      { url: 'https://www.morningstar.com/rss/feed', name: 'Morningstar' },
+      { url: 'https://www.economist.com/finance-and-economics/rss.xml', name: 'The Economist Finance' },
+      { url: 'https://www.moneycontrol.com/rss/business.xml', name: 'MoneyControl' },
+      { url: 'https://feeds.a.dj.com/rss/RSSMarketsMain.xml', name: 'Dow Jones Markets' }
+    ],
+    
+    stocks: [
+      { url: 'https://www.investors.com/category/market-trend/stock-market-today/feed/', name: 'Investor\'s Business Daily' },
+      { url: 'https://www.fool.com/rss/headlines', name: 'Motley Fool' },
+      { url: 'https://www.zacks.com/rss/rank_comm.rss', name: 'Zacks Investment Research' },
+      { url: 'https://stocknews.com/feed/', name: 'StockNews' },
+      { url: 'https://www.benzinga.com/feed/market-news', name: 'Benzinga Markets' },
+      { url: 'https://www.marketbeat.com/rss/marketbeat-feed.aspx', name: 'MarketBeat' },
+      { url: 'https://www.investmentwatchblog.com/feed/', name: 'Investment Watch Blog' },
+      { url: 'https://feeds.finviz.com/finviz_news.rss', name: 'Finviz News' },
+      { url: 'https://www.dividendinvestor.com/feed/', name: 'Dividend Investor' },
+      { url: 'https://www.tradingview.com/feed/', name: 'TradingView Blog' }
+    ],
+    
+    crypto: [
+      { url: 'https://cointelegraph.com/rss', name: 'CoinTelegraph' },
+      { url: 'https://coindesk.com/arc/outboundfeeds/rss/', name: 'CoinDesk' },
+      { url: 'https://decrypt.co/feed', name: 'Decrypt' },
+      { url: 'https://bitcoinmagazine.com/.rss/full/', name: 'Bitcoin Magazine' },
+      { url: 'https://cryptobriefing.com/feed/', name: 'Crypto Briefing' },
+      { url: 'https://bitcoinist.com/feed/', name: 'Bitcoinist' },
+      { url: 'https://ambcrypto.com/feed/', name: 'AMBCrypto' },
+      { url: 'https://news.bitcoin.com/feed/', name: 'Bitcoin.com' },
+      { url: 'https://cryptopotato.com/feed/', name: 'CryptoPotato' },
+      { url: 'https://dailyhodl.com/feed/', name: 'The Daily Hodl' }
+    ],
+    
+    realestate: [
+      { url: 'https://www.inman.com/feed/', name: 'Inman' },
+      { url: 'https://www.realestateinvestorgoddesses.com/blog/rss.xml', name: 'Real Estate Investor' },
+      { url: 'https://www.reit.com/news/rss.xml', name: 'REIT.com' },
+      { url: 'https://therealdeal.com/feed/', name: 'The Real Deal' },
+      { url: 'https://www.realtor.com/news/feed/', name: 'Realtor.com News' },
+      { url: 'https://www.housingwire.com/feed/', name: 'HousingWire' },
+      { url: 'https://www.redfin.com/blog/feed/', name: 'Redfin Blog' },
+      { url: 'https://www.zillow.com/blog/feed/', name: 'Zillow Blog' },
+      { url: 'https://journal.firsttuesday.us/feed/', name: 'first tuesday Journal' },
+      { url: 'https://www.biggerpockets.com/blog/feed', name: 'BiggerPockets' }
+    ],
+    
+    commodities: [
+      { url: 'https://www.kitco.com/rss/', name: 'Kitco (Precious Metals)' },
+      { url: 'https://oilprice.com/rss/main', name: 'OilPrice.com' },
+      { url: 'https://www.agriculture.com/rss/news', name: 'Agriculture.com' },
+      { url: 'https://feeds.barchart.com/commodities', name: 'Barchart Commodities' },
+      { url: 'https://www.mining.com/feed/', name: 'Mining.com' },
+      { url: 'https://www.agweb.com/rss', name: 'AgWeb' },
+      { url: 'https://www.spglobal.com/platts/en/rss-feed', name: 'S&P Global Platts' },
+      { url: 'https://seekingalpha.com/market-news/commodities.xml', name: 'Seeking Alpha Commodities' },
+      { url: 'https://www.metalsbulletin.com/rss/', name: 'Metals Bulletin' }
+    ],
+    
+    education: [
+      { url: 'https://www.edutopia.org/rss.xml', name: 'Edutopia' },
+      { url: 'https://www.edsurge.com/feeds/articles', name: 'EdSurge' },
+      { url: 'https://www.chronicle.com/feed', name: 'Chronicle of Higher Education' },
+      { url: 'https://www.insidehighered.com/rss.xml', name: 'Inside Higher Ed' },
+      { url: 'https://www.eschoolnews.com/feed/', name: 'eSchool News' },
+      { url: 'https://www.educationdive.com/feeds/news/', name: 'Education Dive' },
+      { url: 'https://www.teachthought.com/feed/', name: 'TeachThought' },
+      { url: 'https://www.educationnext.org/feed/', name: 'Education Next' }
+    ],
+    
+    general: [
+      { url: 'https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml', name: 'New York Times' },
+      { url: 'https://feeds.bbci.co.uk/news/rss.xml', name: 'BBC News' },
+      { url: 'https://www.reddit.com/r/news/.rss', name: 'Reddit News' },
+      { url: 'https://www.economist.com/finance-and-economics/rss.xml', name: 'The Economist (Finance)' },
+      { url: 'https://www.reuters.com/rssFeed/businessNews', name: 'Reuters Business' },
+      { url: 'https://feeds.washingtonpost.com/rss/business', name: 'Washington Post Business' },
+      { url: 'https://feeds.a.dj.com/rss/WSJcomUSBusiness.xml', name: 'WSJ US Business' },
+      { url: 'https://feeds.skynews.com/feeds/rss/home.xml', name: 'Sky News' },
+      { url: 'https://www.theguardian.com/uk/rss', name: 'The Guardian' },
+      { url: 'https://rss.cnn.com/rss/money_latest.rss', name: 'CNN Money' },
+      { url: 'https://www.aljazeera.com/xml/rss/all.xml', name: 'Al Jazeera' }
+    ]
+  };
 // Extract image from various RSS formats
 function extractImage(item) {
   // Try media:content

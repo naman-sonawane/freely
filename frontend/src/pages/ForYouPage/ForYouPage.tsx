@@ -34,7 +34,7 @@ const ForYouPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [likedItems, setLikedItems] = useState<{ [key: string]: boolean }>({});
   const [savedItems, setSavedItems] = useState<{ [key: string]: boolean }>({});
-  const [categories, setCategories] = useState<string[]>(['technology', 'general']);
+  const [categories, setCategories] = useState<string[]>(['business', 'finance', 'stocks']);
   const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(true);
   const limit = 10;
@@ -147,6 +147,20 @@ const ForYouPage: React.FC = () => {
     }));
   };
 
+  // Update the categories object with the new options
+  const categoryOptions = {
+    business: 'Business',
+    finance: 'Finance',
+    stocks: 'Stocks',
+    crypto: 'Cryptocurrency',
+    realestate: 'Real Estate',
+    commodities: 'Commodities',
+    technology: 'Technology',
+    general: 'General News',
+    science: 'Science',
+    education: 'Education'
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 w-[100vw]">
       <AppNavbar />
@@ -181,13 +195,7 @@ const ForYouPage: React.FC = () => {
             <div>
               <h3 className="text-sm font-medium text-gray-700 mb-2">Categories</h3>
               <div className="flex flex-col gap-2">
-                {Object.entries({
-                  technology: 'Technology',
-                  science: 'Science',
-                  business: 'Business',
-                  education: 'Education',
-                  general: 'General News'
-                }).map(([key, label]) => (
+                {Object.entries(categoryOptions).map(([key, label]) => (
                   <button
                     key={key}
                     onClick={() => handleCategoryToggle(key)}
