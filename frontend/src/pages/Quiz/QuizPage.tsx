@@ -39,7 +39,7 @@ const QuizPage: React.FC = () => {
           "explanation": "A brief explanation"
         }
       `;
-      const response = await axios.post('http://localhost:5000/api/upload', { prompt });
+      const response = await axios.post('/api/upload', { prompt });
       const quizContent = response.data.description;
       const quizJson = quizContent.replace(/```json\n|\n```/g, '').trim();
       const newQuizData = JSON.parse(quizJson);
@@ -71,7 +71,7 @@ const QuizPage: React.FC = () => {
           params: { username }
         });
         const updatedInterests = [...data.interests, currentNode];
-        const response = await axios.put('http://localhost:5000/api/users/profile', {
+        const response = await axios.put('/api/users/profile', {
           username,
           interests: updatedInterests,
         });
@@ -91,7 +91,7 @@ const QuizPage: React.FC = () => {
           params: { username }
         });
         const updatedGoals = [...data.goals, currentNode];
-        const response = await axios.put('http://localhost:5000/api/users/profile', {
+        const response = await axios.put('/api/users/profile', {
           username,
           goals: updatedGoals,
         });

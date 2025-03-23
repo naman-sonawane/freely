@@ -33,7 +33,7 @@ const getIcon = (type: 'article' | 'video' | 'live') => {
 };
 
 const extractYouTubeId = (url: string): string | null => {
-    const videoIdMatch = url.match(/(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+    const videoIdMatch = url.match(/(?:youtube\.com\/(?:[^/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
     return videoIdMatch ? videoIdMatch[1] : null;
 };
 
@@ -47,7 +47,7 @@ const ForYouPage: React.FC = () => {
 
     const fetchUserGoals = async (username: string) => {
         try {
-            const response = await axios.get('http://localhost:5000/api/users/profile', {
+            const response = await axios.get('/api/users/profile', {
                 params: { username }
             });
             return response.data.goals;
@@ -70,7 +70,7 @@ const ForYouPage: React.FC = () => {
                 ]
               }
             `;
-            const response = await axios.post('http://localhost:5000/api/upload', { prompt });
+            const response = await axios.post('/api/upload', { prompt });
             const rawLinksData = response.data.description;
             const jsonString = rawLinksData.replace(/```json\n|\n```/g, '').trim();
             const linksData = JSON.parse(jsonString);

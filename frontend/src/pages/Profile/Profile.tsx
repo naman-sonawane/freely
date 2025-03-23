@@ -24,7 +24,7 @@ const Profile: React.FC = () => {
             }
 
             try {
-                const response = await axios.get('http://localhost:5000/api/users/profile', {
+                const response = await axios.get('/api/users/profile', {
                     params: { username }
                 });
                 const { interests, goals } = response.data;
@@ -88,7 +88,7 @@ const Profile: React.FC = () => {
         }
 
         try {
-            const response = await axios.put('http://localhost:5000/api/users/profile', {
+            const response = await axios.put('/api/users/profile', {
                 username,
                 interests,
                 goals

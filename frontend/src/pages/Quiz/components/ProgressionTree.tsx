@@ -78,7 +78,7 @@ const ProgressionTree: React.FC<ProgressionTreeProps> = ({ onNodeClick }) => {
         ]
       `;
 
-      const response = await axios.post('http://localhost:5000/api/upload', { prompt });
+      const response = await axios.post('/api/upload', { prompt });
       const rawTreeData = response.data.description;
       const jsonString = rawTreeData.replace(/```json\n|\n```/g, '').trim();
       const parsedTreeData = JSON.parse(jsonString);
