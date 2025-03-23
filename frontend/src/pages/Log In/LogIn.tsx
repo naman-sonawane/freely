@@ -22,7 +22,7 @@ const LoginPage: React.FC = () => {
 
     const handleLogin = async () => {
         try {
-            const response = await axios.post('/api/users/login', {
+            const response = await axios.post(import.meta.env.VITE_BACKEND_URL + '/api/users/login', {
                 identifier,
                 password,
             });
