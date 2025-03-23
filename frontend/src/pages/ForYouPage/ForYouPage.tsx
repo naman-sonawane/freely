@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import AppNavbar from '../App Navbar/AppNavbar';
@@ -25,6 +25,7 @@ interface NewsResponse {
   offset: number;
   limit: number;
   items: NewsItem[];
+  recommendedCategories?: string[];
 }
 
 const ForYouPage: React.FC = () => {
@@ -37,6 +38,8 @@ const ForYouPage: React.FC = () => {
   const [categories, setCategories] = useState<string[]>(['business', 'finance', 'stocks']);
   const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(true);
+  const [activeTab, setActiveTab] = useState<'categories' | 'recommended'>('categories');
+  const [recommendedCategories, setRecommendedCategories] = useState<string[]>([]);
   const limit = 10;
 
   const fetchUserGoals = async (username: string) => {
@@ -44,46 +47,76 @@ const ForYouPage: React.FC = () => {
       const response = await axios.get(import.meta.env.VITE_BACKEND_URL + '/api/users/profile', {
         params: { username }
       });
-      return response.data.goals;
+      return response.data.goals || [];
     } catch (error) {
       console.error('Error fetching user goals:', error);
       return [];
     }
   };
 
-  const fetchNews = async (goalsToUse: string[], page: number = 0) => {
+  const fetchNews = useCallback(async (goalsToUse: string[], page: number = 0) => {
     setLoading(true);
     try {
       const interests = goalsToUse.join(',');
       const categoriesStr = categories.join(',');
       const offset = page * limit;
       
-      const response = await axios.get<NewsResponse>(
-        `${import.meta.env.VITE_BACKEND_URL}/api/news/personalized`, {
-          params: {
-            interests,
-            categories: categoriesStr,
-            limit,
-            offset
+      let response;
+      if (activeTab === 'categories') {
+        response = await axios.get<NewsResponse>(
+          `${import.meta.env.VITE_BACKEND_URL}/api/news/personalized`, {
+            params: {
+              interests,
+              categories: categoriesStr,
+              limit,
+              offset
+            }
           }
-        }
-      );
-      
-      if (page === 0) {
-        setNewsItems(response.data.items);
+        );
       } else {
-        setNewsItems(prev => [...prev, ...response.data.items]);
+        // Use the recommended endpoint
+        response = await axios.get<NewsResponse>(
+          `${import.meta.env.VITE_BACKEND_URL}/api/news/recommended`, {
+            params: {
+              interests,
+              goals: interests, // Using the same interests as goals for now
+              limit,
+              offset
+            }
+          }
+        );
+        
+        // Store the recommended categories
+        if (response.data.recommendedCategories) {
+          setRecommendedCategories(response.data.recommendedCategories);
+        }
       }
       
-      // Check if there are more items to load
-      setHasMore(response.data.items.length === limit);
+      // Check if response.data.items exists before using it
+      if (response.data && response.data.items) {
+        if (page === 0) {
+          setNewsItems(response.data.items);
+        } else {
+          setNewsItems(prev => [...prev, ...response.data.items]);
+        }
+        
+        // Check if there are more items to load
+        setHasMore(response.data.items.length === limit);
+      } else {
+        // Handle case where items is undefined
+        console.error('No items in response:', response.data);
+        setNewsItems([]);
+        setHasMore(false);
+      }
       
     } catch (error) {
       console.error('Error fetching news:', error);
+      setNewsItems([]);
+      setHasMore(false);
     } finally {
       setLoading(false);
     }
-  };
+  }, [activeTab, categories, limit]);
 
   const loadMore = () => {
     if (!loading && hasMore) {
@@ -111,7 +144,7 @@ const ForYouPage: React.FC = () => {
     };
 
     fetchGoalsAndNews();
-  }, [selectedGoals, categories]);
+  }, [selectedGoals, categories, activeTab, fetchNews]);
 
   const handleGoalToggle = (goal: string) => {
     setSelectedGoals(prev => {
@@ -158,7 +191,6 @@ const ForYouPage: React.FC = () => {
     technology: 'Technology',
     general: 'General News',
     science: 'Science',
-    education: 'Education'
   };
 
   return (
@@ -169,53 +201,111 @@ const ForYouPage: React.FC = () => {
         {/* Left Sidebar - Filters */}
         <div className="md:w-64 flex-shrink-0">
           <div className="bg-white rounded-lg shadow p-4 sticky top-20">
-            <h2 className="text-lg font-semibold text-gray-800 mb-4">Filters</h2>
-            
-            {/* Goals Filter */}
-            <div className="mb-6">
-              <h3 className="text-sm font-medium text-gray-700 mb-2">Your Goals</h3>
-              <div className="flex flex-col gap-2">
-                {goals.map((goal, index) => (
-                  <button
-                    key={index}
-                    onClick={() => handleGoalToggle(goal)}
-                    className={`px-3 py-2 rounded text-sm font-medium transition-colors text-left ${
-                      selectedGoals.includes(goal)
-                        ? 'bg-blue-50 text-blue-700 border-l-4 border-blue-500'
-                        : 'hover:bg-gray-50 text-gray-700'
-                    }`}
-                  >
-                    {goal}
-                  </button>
-                ))}
-              </div>
+            {/* Tab Selector */}
+            <div className="flex mb-6 border-b">
+              <button
+                onClick={() => setActiveTab('recommended')}
+                className={`flex-1 py-2 text-center font-medium ${
+                  activeTab === 'recommended' 
+                    ? 'text-blue-600 border-b-2 border-blue-600' 
+                    : 'text-gray-500 hover:text-gray-700'
+                }`}
+              >
+                For You
+              </button>
+              <button
+                onClick={() => setActiveTab('categories')}
+                className={`flex-1 py-2 text-center font-medium ${
+                  activeTab === 'categories' 
+                    ? 'text-blue-600 border-b-2 border-blue-600' 
+                    : 'text-gray-500 hover:text-gray-700'
+                }`}
+              >
+                Categories
+              </button>
             </div>
             
-            {/* Categories Filter */}
-            <div>
-              <h3 className="text-sm font-medium text-gray-700 mb-2">Categories</h3>
-              <div className="flex flex-col gap-2">
-                {Object.entries(categoryOptions).map(([key, label]) => (
-                  <button
-                    key={key}
-                    onClick={() => handleCategoryToggle(key)}
-                    className={`px-3 py-2 rounded text-sm font-medium transition-colors text-left ${
-                      categories.includes(key)
-                        ? 'bg-blue-50 text-blue-700 border-l-4 border-blue-500'
-                        : 'hover:bg-gray-50 text-gray-700'
-                    }`}
-                  >
-                    {label}
-                  </button>
-                ))}
-              </div>
-            </div>
+            {activeTab === 'categories' ? (
+              <>
+                {/* Goals Filter */}
+                <div className="mb-6">
+                  <h3 className="text-sm font-medium text-gray-700 mb-2">Your Goals</h3>
+                  <div className="flex flex-col gap-2">
+                    {goals.map((goal, index) => (
+                      <button
+                        key={index}
+                        onClick={() => handleGoalToggle(goal)}
+                        className={`px-3 py-2 rounded text-sm font-medium transition-colors text-left ${
+                          selectedGoals.includes(goal)
+                            ? 'bg-blue-50 text-blue-700 border-l-4 border-blue-500'
+                            : 'hover:bg-gray-50 text-gray-700'
+                        }`}
+                      >
+                        {goal}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                
+                {/* Categories Filter */}
+                <div>
+                  <h3 className="text-sm font-medium text-gray-700 mb-2">Categories</h3>
+                  <div className="flex flex-col gap-2">
+                    {Object.entries(categoryOptions).map(([key, label]) => (
+                      <button
+                        key={key}
+                        onClick={() => handleCategoryToggle(key)}
+                        className={`px-3 py-2 rounded text-sm font-medium transition-colors text-left ${
+                          categories.includes(key)
+                            ? 'bg-blue-50 text-blue-700 border-l-4 border-blue-500'
+                            : 'hover:bg-gray-50 text-gray-700'
+                        }`}
+                      >
+                        {label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </>
+            ) : (
+              <>
+                <h2 className="text-lg font-semibold text-gray-800 mb-4">Recommended For You</h2>
+                
+                {/* Goals Display */}
+                <div className="mb-6">
+                  <h3 className="text-sm font-medium text-gray-700 mb-2">Based on Your Goals</h3>
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {goals.map((goal, index) => (
+                      <span key={index} className="bg-blue-50 text-blue-700 text-xs px-2 py-1 rounded-full">
+                        {goal}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                
+                {/* Recommended Categories */}
+                {recommendedCategories && recommendedCategories.length > 0 && (
+                  <div>
+                    <h3 className="text-sm font-medium text-gray-700 mb-2">Recommended Categories</h3>
+                    <div className="flex flex-wrap gap-2">
+                      {recommendedCategories.map((category) => (
+                        <span key={category} className="bg-green-50 text-green-700 text-xs px-2 py-1 rounded-full">
+                          {categoryOptions[category as keyof typeof categoryOptions] || category}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </>
+            )}
           </div>
         </div>
         
         {/* Main Content - News Feed */}
         <div className="flex-grow max-w-2xl">
-          <h1 className="text-2xl font-bold text-gray-800 mb-6">For You</h1>
+          <h1 className="text-2xl font-bold text-gray-800 mb-6">
+            {activeTab === 'recommended' ? 'Recommended For You' : 'For You'}
+          </h1>
           
           {/* News Feed */}
           <div className="space-y-4">
@@ -255,7 +345,9 @@ const ForYouPage: React.FC = () => {
                 </svg>
                 <h3 className="text-xl font-medium text-gray-700 mb-2">No articles found</h3>
                 <p className="text-gray-500 mb-4">
-                  Try selecting different goals or categories to see more content.
+                  {activeTab === 'recommended' 
+                    ? "We couldn't find articles matching your interests. Try updating your goals."
+                    : "Try selecting different goals or categories to see more content."}
                 </p>
               </div>
             )}

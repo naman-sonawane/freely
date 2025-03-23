@@ -19,7 +19,6 @@ const RSS_FEEDS = {
       { url: 'https://feeds.arstechnica.com/arstechnica/technology-lab', name: 'Ars Technica' },
       { url: 'https://www.cnet.com/rss/news/', name: 'CNET' },
       { url: 'https://www.zdnet.com/news/rss.xml', name: 'ZDNet' },
-      { url: 'https://readwrite.com/feed/', name: 'ReadWrite' },
       { url: 'https://thenextweb.com/feed', name: 'The Next Web' },
       { url: 'https://www.engadget.com/rss.xml', name: 'Engadget' },
       { url: 'https://feeds.feedburner.com/venturebeat/SZYF', name: 'VentureBeat' },
@@ -28,10 +27,8 @@ const RSS_FEEDS = {
     ],
     
     science: [
-      { url: 'https://rss.sciam.com/ScientificAmerican-Global', name: 'Scientific American' },
       { url: 'https://www.livescience.com/feeds/all', name: 'Live Science' },
       { url: 'https://feeds.newscientist.com/feeds/features', name: 'New Scientist' },
-      { url: 'https://science.nasa.gov/rss.xml', name: 'NASA Science' },
       { url: 'https://feeds.nature.com/nature/rss/current', name: 'Nature' },
       { url: 'https://www.science.org/rss/news_current.xml', name: 'Science Magazine' },
       { url: 'https://phys.org/rss-feed/', name: 'Phys.org' },
@@ -45,9 +42,7 @@ const RSS_FEEDS = {
       { url: 'https://www.fastcompany.com/latest/rss', name: 'Fast Company' },
       { url: 'https://fortune.com/feed/', name: 'Fortune' },
       { url: 'https://www.businessinsider.com/rss', name: 'Business Insider' },
-      { url: 'https://hbr.org/feed', name: 'Harvard Business Review' },
       { url: 'https://feeds.skynews.com/feeds/rss/business.xml', name: 'Sky News Business' },
-      { url: 'https://www.forbes.com/business/feed/', name: 'Forbes Business' },
       { url: 'https://knowledge.wharton.upenn.edu/feed/', name: 'Knowledge@Wharton' },
       { url: 'https://feeds.feedburner.com/CalculatedRisk', name: 'Calculated Risk' }
     ],
@@ -120,29 +115,16 @@ const RSS_FEEDS = {
       { url: 'https://seekingalpha.com/market-news/commodities.xml', name: 'Seeking Alpha Commodities' },
       { url: 'https://www.metalsbulletin.com/rss/', name: 'Metals Bulletin' }
     ],
-    
-    education: [
-      { url: 'https://www.edutopia.org/rss.xml', name: 'Edutopia' },
-      { url: 'https://www.edsurge.com/feeds/articles', name: 'EdSurge' },
-      { url: 'https://www.chronicle.com/feed', name: 'Chronicle of Higher Education' },
-      { url: 'https://www.insidehighered.com/rss.xml', name: 'Inside Higher Ed' },
-      { url: 'https://www.eschoolnews.com/feed/', name: 'eSchool News' },
-      { url: 'https://www.educationdive.com/feeds/news/', name: 'Education Dive' },
-      { url: 'https://www.teachthought.com/feed/', name: 'TeachThought' },
-      { url: 'https://www.educationnext.org/feed/', name: 'Education Next' }
-    ],
-    
+        
     general: [
       { url: 'https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml', name: 'New York Times' },
       { url: 'https://feeds.bbci.co.uk/news/rss.xml', name: 'BBC News' },
       { url: 'https://www.reddit.com/r/news/.rss', name: 'Reddit News' },
       { url: 'https://www.economist.com/finance-and-economics/rss.xml', name: 'The Economist (Finance)' },
-      { url: 'https://www.reuters.com/rssFeed/businessNews', name: 'Reuters Business' },
       { url: 'https://feeds.washingtonpost.com/rss/business', name: 'Washington Post Business' },
       { url: 'https://feeds.a.dj.com/rss/WSJcomUSBusiness.xml', name: 'WSJ US Business' },
       { url: 'https://feeds.skynews.com/feeds/rss/home.xml', name: 'Sky News' },
       { url: 'https://www.theguardian.com/uk/rss', name: 'The Guardian' },
-      { url: 'https://rss.cnn.com/rss/money_latest.rss', name: 'CNN Money' },
       { url: 'https://www.aljazeera.com/xml/rss/all.xml', name: 'Al Jazeera' }
     ]
   };
