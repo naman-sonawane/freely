@@ -53,15 +53,6 @@ const Landing: React.FC = () => {
         </div>
         */}
 
-        {/* Floating Info Cards */}
-        <div className="absolute right-96 top-1/3 transform -translate-y-1/2 w-48 h-16 bg-[#23234b] shadow-md rounded-lg border border-[#ff2e63] flex items-center justify-center">
-          <img src={Members} alt="Members Icon" className="h-6 mr-2" />
-          <span className="text-gray-300 font-medium">1.2K investors</span>
-        </div>
-        <div className="absolute right-[34rem] top-1/4 transform -translate-y-1/2 w-48 h-16 bg-[#23234b] shadow-md rounded-lg border border-[#ff2e63] flex items-center justify-center">
-          <img src={Chat} alt="Chat Icon" className="h-6 mr-2" />
-          <span className="text-gray-300 font-medium">8.5K discussions</span>
-        </div>
       </div>
     </section>
   );
