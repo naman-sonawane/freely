@@ -3,8 +3,6 @@ import React from 'react';
 import LiveIcon from './assets/Live.svg';
 import LearningIcon from './assets/Leaning.svg';
 import RecordIcon from './assets/Record.svg';
-import AnalyticsIcon from './assets/Analytics.svg';
-import LockIcon from './assets/Lock.svg';
 import Elipse from './assets/Elipse-Bottom.svg';
 
 const features = [
@@ -22,16 +20,6 @@ const features = [
     icon: <img src={RecordIcon} alt="Interactive Progression Tree" className="object-contain transition-transform duration-300 hover:scale-105" />,
     title: 'Interactive Progression Tree',
     description: 'Explore and learn new skills with a visual roadmap tailored to your chosen topics.',
-  },
-  {
-    icon: <img src={AnalyticsIcon} alt="Dynamic Quiz Creator" className="object-contain transition-transform duration-300 hover:scale-105" />,
-    title: 'Dynamic Quiz Creator',
-    description: 'Test your knowledge with automatically generated quizzes based on your learning path.',
-  },
-  {
-    icon: <img src={LockIcon} alt="Goal-Oriented Learning" className="object-contain transition-transform duration-300 hover:scale-105" />,
-    title: 'Goal-Oriented Learning',
-    description: 'Align your learning activities with your personal and professional goals, and track your progress.',
   },
 ];
 

@@ -55,14 +55,7 @@ const LoginPage: React.FC = () => {
 
                 <div className="mb-6 relative">
                     <h2 className="text-sm text-gray-500 font-medium mb-2">Username or Email</h2>
-                    <div className="input-container flex items-center relative p-2 w-[24rem] rounded-lg text-gray-500 focus-within:text-black focus-within:border-blue-500"
-                        style={{
-                            background: '#DDDDDD',
-                            border: '0.5px solid #5F5F5F',
-                            boxShadow: 'inset 0px 2px 3.8px rgba(0, 0, 0, 0.5)',
-                            borderRadius: '10px',
-                        }}
-                    >
+                    <div className="input-container flex items-center relative p-2 w-[24rem] rounded-lg text-gray-500 focus-within:text-black focus-within:border-blue-500 border-2">
                         <img src={User} alt="User Icon" className="absolute left-2" />
                         <input
                             type="text"
@@ -76,14 +69,7 @@ const LoginPage: React.FC = () => {
 
                 <div className="mb-6 relative">
                     <h2 className="text-sm text-gray-500 font-medium mb-2">Password</h2>
-                    <div className="input-container flex items-center relative p-2 w-[24rem] rounded-lg text-gray-500 focus-within:text-black focus-within:border-blue-500"
-                        style={{
-                            background: '#DDDDDD',
-                            border: '0.5px solid #5F5F5F',
-                            boxShadow: 'inset 0px 2px 3.8px rgba(0, 0, 0, 0.5)',
-                            borderRadius: '10px',
-                        }}
-                    >
+                    <div className="input-container flex items-center relative p-2 w-[24rem] rounded-lg text-gray-500 focus-within:text-black focus-within:border-blue-500 border-2 ">
                         <img src={Password} alt="Password Icon" className="absolute left-2" />
                         <input
                             type="password"
